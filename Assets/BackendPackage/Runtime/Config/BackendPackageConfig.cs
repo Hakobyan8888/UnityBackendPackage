@@ -16,6 +16,7 @@ namespace BackendPackage.Runtime.Core
         public bool completeBootstrapWhenAuthenticationFails = true;
         public bool initializeIapOnStartup = true;
         public bool initializeTikTokOnStartup = true;
+        public bool initializeUnityAnalyticsOnStartup = true;
 
         [Header("Auth")]
         public BackendAuthConfiguration auth = new();
@@ -25,6 +26,9 @@ namespace BackendPackage.Runtime.Core
 
         [Header("TikTok")]
         public BackendTikTokConfiguration tikTok = new();
+
+        [Header("Unity Analytics")]
+        public BackendUnityAnalyticsConfiguration unityAnalytics = new();
 
         [Header("Ads")]
         public BackendAdsConfiguration ads = new();
@@ -70,6 +74,17 @@ namespace BackendPackage.Runtime.Core
         public string androidAppId;
         public string androidTikTokAppId;
         public string androidAccessToken;
+    }
+
+    [Serializable]
+    public sealed class BackendUnityAnalyticsConfiguration
+    {
+        [Header("General")]
+        public bool autoInitialize = true;
+        public bool registerAsDefaultProvider = true;
+        public bool startDataCollectionOnInitialize;
+        public bool trackAppStartedOnInitialize = true;
+        public bool debugLogs;
     }
 
     [Serializable]

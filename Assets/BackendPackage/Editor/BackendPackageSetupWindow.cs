@@ -11,13 +11,15 @@ namespace BackendPackage.Editor
     public sealed class BackendPackageSetupWindow : EditorWindow
     {
         private const string UnityIapPackageId = "com.unity.purchasing";
+        private const string UnityAnalyticsPackageId = "com.unity.services.analytics";
 
         private static readonly string[] IntegrationSymbols =
         {
             "BACKENDPACKAGE_ENABLE_AUTH",
             "BACKENDPACKAGE_ENABLE_IAP",
             "BACKENDPACKAGE_ENABLE_LEVELPLAY",
-            "BACKENDPACKAGE_ENABLE_TIKTOK"
+            "BACKENDPACKAGE_ENABLE_TIKTOK",
+            "BACKENDPACKAGE_ENABLE_UNITY_ANALYTICS"
         };
 
         [MenuItem("Backend Package/Setup Integrations")]
@@ -34,6 +36,7 @@ namespace BackendPackage.Editor
                 MessageType.Info);
 
             DrawUpmInstaller("Unity IAP", UnityIapPackageId, "BACKENDPACKAGE_ENABLE_IAP");
+            DrawUpmInstaller("Unity Analytics", UnityAnalyticsPackageId, "BACKENDPACKAGE_ENABLE_UNITY_ANALYTICS");
 
             DrawExternalSdk("Google Play Games", "BACKENDPACKAGE_ENABLE_AUTH", "https://github.com/playgameservices/play-games-plugin-for-unity");
             DrawExternalSdk("Unity LevelPlay SDK", "BACKENDPACKAGE_ENABLE_LEVELPLAY", "https://docs.unity.com/grow/levelplay/sdk/unity/intro");

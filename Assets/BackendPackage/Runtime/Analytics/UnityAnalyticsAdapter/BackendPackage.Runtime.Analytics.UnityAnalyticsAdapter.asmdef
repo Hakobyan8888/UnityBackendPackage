@@ -1,0 +1,21 @@
+{
+  "name": "BackendPackage.Runtime.Analytics.UnityAnalyticsAdapter",
+  "rootNamespace": "BackendPackage.Runtime",
+  "references": [
+    "BackendPackage.Runtime.Config",
+    "BackendPackage.Runtime.Core",
+    "Unity.Services.Core",
+    "Unity.Services.Analytics"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [
+    "BACKENDPACKAGE_ENABLE_UNITY_ANALYTICS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
