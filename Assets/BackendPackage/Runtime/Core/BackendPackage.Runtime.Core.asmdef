@@ -1,0 +1,16 @@
+{
+  "name": "BackendPackage.Runtime.Core",
+  "rootNamespace": "BackendPackage.Runtime",
+  "references": [
+    "BackendPackage.Runtime.Config"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

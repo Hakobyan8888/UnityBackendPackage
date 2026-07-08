@@ -1,0 +1,11 @@
+{
+  "name": "com.backendpackage.runtime",
+  "version": "0.2.0",
+  "displayName": "Backend Package",
+  "description": "A modular Unity backend helper package with optional auth, IAP, TikTok, and LevelPlay integrations.",
+  "unity": "6000.0",
+  "author": {
+    "name": "Backend Package"
+  },
+  "dependencies": {}
+}

@@ -1,0 +1,20 @@
+{
+  "name": "BackendPackage.Runtime.Auth",
+  "rootNamespace": "BackendPackage.Runtime",
+  "references": [
+    "BackendPackage.Runtime.Config",
+    "BackendPackage.Runtime.Core",
+    "Google.Play.Games"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [
+    "BACKENDPACKAGE_ENABLE_AUTH"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

@@ -1,0 +1,20 @@
+{
+  "name": "BackendPackage.Runtime.Ads.LevelPlayAdsAdapter",
+  "rootNamespace": "BackendPackage.Runtime",
+  "references": [
+    "BackendPackage.Runtime.Config",
+    "BackendPackage.Runtime.Core",
+    "Unity.LevelPlay"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [
+    "BACKENDPACKAGE_ENABLE_LEVELPLAY"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
