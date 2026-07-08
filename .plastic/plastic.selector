@@ -1,4 +1,0 @@
-repository "BackendPackage/BackendPackage@18968411734510@cloud"
-  path "/"
-    br "/main"
-    co "/main"
