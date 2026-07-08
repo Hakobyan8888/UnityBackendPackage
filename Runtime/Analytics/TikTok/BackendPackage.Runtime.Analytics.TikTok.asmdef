@@ -1,0 +1,19 @@
+{
+  "name": "BackendPackage.Runtime.Analytics.TikTok",
+  "rootNamespace": "BackendPackage.Runtime",
+  "references": [
+    "BackendPackage.Runtime.Config",
+    "BackendPackage.Runtime.Core"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [
+    "BACKENDPACKAGE_ENABLE_TIKTOK"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

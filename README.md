@@ -76,7 +76,7 @@ Assembly setup:
 
 - `Runtime/Config` and `Runtime/Core` are always available.
 - `Runtime/Auth`, `Runtime/IAP`, `Runtime/Analytics/UnityAnalyticsAdapter`, and `Runtime/Ads/LevelPlayAdsAdapter` use `asmdef` define constraints so they do not compile until explicitly enabled.
-- `Runtime/Analytics/TikTok` is wrapped in `#if BACKENDPACKAGE_ENABLE_TIKTOK` because some TikTok SDK imports do not expose asmdefs.
+- `Runtime/Analytics/TikTok` uses an asmdef define constraint and reflection so it can compile as a Git/UPM package even when the TikTok SDK does not expose asmdefs.
 
 Analytics usage:
 
