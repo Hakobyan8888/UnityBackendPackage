@@ -84,6 +84,12 @@ Analytics usage:
 - Add `BackendUnityAnalyticsManager` to the bootstrap object when Unity Analytics is enabled.
 - Call `BackendAnalytics.StartDataCollection()` after your consent/privacy flow, unless your app configuration allows data collection on startup.
 
+Ads usage:
+
+- Enable `BACKENDPACKAGE_ENABLE_LEVELPLAY` only after the full Unity LevelPlay SDK is installed.
+- Configure app keys and ad unit IDs in `BackendPackageConfig.ads`, including `androidBannerAdUnitId` and `iosBannerAdUnitId` for banners.
+- Use `BackendLevelPlayAdsManager.LoadBanner()`, `ShowBanner()`, `HideBanner()`, and `DestroyBanner()` for banner lifecycle control. Banner size, position, safe-area behavior, and display-on-load are controlled from `BackendAdsConfiguration`.
+
 Editor helpers:
 
 - `Backend Package/Create Test Bootstrap In Scene`

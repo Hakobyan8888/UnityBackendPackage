@@ -94,15 +94,54 @@ namespace BackendPackage.Runtime.Core
         public bool autoInitialize = true;
         public bool enableRewarded = true;
         public bool enableInterstitial = true;
+        public bool enableBanner = true;
 
         [Header("Android")]
         public string androidAppKey;
         public string androidRewardedAdUnitId;
         public string androidInterstitialAdUnitId;
+        public string androidBannerAdUnitId;
 
         [Header("iOS")]
         public string iosAppKey;
         public string iosRewardedAdUnitId;
         public string iosInterstitialAdUnitId;
+        public string iosBannerAdUnitId;
+
+        [Header("Banner")]
+        public bool autoLoadBanner = true;
+        public bool showBannerOnLoad = true;
+        public bool respectBannerSafeArea = true;
+        public string bannerPlacementName;
+        public BackendBannerSize bannerSize = BackendBannerSize.Banner;
+        public BackendBannerPosition bannerPosition = BackendBannerPosition.BottomCenter;
+        public Vector2 bannerCustomPosition;
+        public int bannerCustomWidth;
+        public int bannerCustomHeight;
+        public int bannerAdaptiveWidth = -1;
+    }
+
+    public enum BackendBannerSize
+    {
+        Banner,
+        Large,
+        MediumRectangle,
+        Leaderboard,
+        Adaptive,
+        Custom
+    }
+
+    public enum BackendBannerPosition
+    {
+        BottomCenter = 0,
+        TopLeft,
+        TopCenter,
+        TopRight,
+        CenterLeft,
+        Center,
+        CenterRight,
+        BottomLeft,
+        BottomRight,
+        Custom
     }
 }

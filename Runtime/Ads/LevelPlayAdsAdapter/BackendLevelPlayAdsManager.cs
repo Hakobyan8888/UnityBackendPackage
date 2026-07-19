@@ -20,10 +20,20 @@ namespace BackendPackage.Runtime.Ads.LevelPlayAdsAdapter
         public event Action<string, string> InterstitialLoadFailed;
         public event Action<string> InterstitialClosed;
         public event Action<string, string> InterstitialDisplayFailed;
+        public event Action<string> BannerLoaded;
+        public event Action<string, string> BannerLoadFailed;
+        public event Action<string> BannerDisplayed;
+        public event Action<string, string> BannerDisplayFailed;
+        public event Action<string> BannerClicked;
+        public event Action<string> BannerExpanded;
+        public event Action<string> BannerCollapsed;
+        public event Action<string> BannerLeftApplication;
 
         private LevelPlayRewardedAd _rewardedAd;
         private LevelPlayInterstitialAd _interstitialAd;
+        private LevelPlayBannerAd _bannerAd;
         private BackendAdsConfiguration _config;
+        private bool _bannerLoaded;
         private bool _initialized;
         private bool _initializing;
 
@@ -82,6 +92,11 @@ namespace BackendPackage.Runtime.Ads.LevelPlayAdsAdapter
             return _interstitialAd != null && _interstitialAd.IsAdReady();
         }
 
+        public bool IsBannerLoaded()
+        {
+            return _bannerAd != null && _bannerLoaded;
+        }
+
         public bool ShowRewarded(string placement = null, string context = null)
         {
             if (_rewardedAd == null || !_rewardedAd.IsAdReady())
@@ -135,6 +150,35 @@ namespace BackendPackage.Runtime.Ads.LevelPlayAdsAdapter
             _interstitialAd?.LoadAd();
         }
 
+        public void LoadBanner()
+        {
+            _bannerLoaded = false;
+            _bannerAd?.LoadAd();
+        }
+
+        public bool ShowBanner()
+        {
+            if (_bannerAd == null)
+            {
+                return false;
+            }
+
+            _bannerAd.ShowAd();
+            return true;
+        }
+
+        public void HideBanner()
+        {
+            _bannerAd?.HideAd();
+        }
+
+        public void DestroyBanner()
+        {
+            _bannerLoaded = false;
+            _bannerAd?.DestroyAd();
+            _bannerAd = null;
+        }
+
         private void HandleInitSuccess(LevelPlayConfiguration configuration)
         {
             _initialized = true;
@@ -148,6 +192,11 @@ namespace BackendPackage.Runtime.Ads.LevelPlayAdsAdapter
             if (_config.enableInterstitial)
             {
                 SetupInterstitial();
+            }
+
+            if (_config.enableBanner)
+            {
+                SetupBanner();
             }
 
             InitializationCompleted?.Invoke(true, string.Empty);
@@ -207,6 +256,49 @@ namespace BackendPackage.Runtime.Ads.LevelPlayAdsAdapter
             _interstitialAd.LoadAd();
         }
 
+        private void SetupBanner()
+        {
+            var bannerUnitId = GetBannerAdUnitId();
+            if (string.IsNullOrWhiteSpace(bannerUnitId))
+            {
+                return;
+            }
+
+            DestroyBanner();
+
+            var bannerConfig = new LevelPlayBannerAd.Config.Builder()
+                .SetSize(GetBannerSize())
+                .SetPosition(GetBannerPosition())
+                .SetDisplayOnLoad(_config.showBannerOnLoad)
+                .SetRespectSafeArea(_config.respectBannerSafeArea)
+                .SetPlacementName(_config.bannerPlacementName)
+                .Build();
+
+            _bannerAd = new LevelPlayBannerAd(bannerUnitId, bannerConfig);
+            _bannerAd.OnAdLoaded += info =>
+            {
+                _bannerLoaded = true;
+                BannerLoaded?.Invoke(info.AdUnitId);
+            };
+            _bannerAd.OnAdLoadFailed += error =>
+            {
+                _bannerLoaded = false;
+                BannerLoadFailed?.Invoke(error.AdUnitId, error.ErrorMessage);
+            };
+            _bannerAd.OnAdDisplayed += info => BannerDisplayed?.Invoke(info.AdUnitId);
+            _bannerAd.OnAdDisplayFailed += (adInfo, error) =>
+                BannerDisplayFailed?.Invoke(adInfo.AdUnitId, error.ToString());
+            _bannerAd.OnAdClicked += info => BannerClicked?.Invoke(info.AdUnitId);
+            _bannerAd.OnAdExpanded += info => BannerExpanded?.Invoke(info.AdUnitId);
+            _bannerAd.OnAdCollapsed += info => BannerCollapsed?.Invoke(info.AdUnitId);
+            _bannerAd.OnAdLeftApplication += info => BannerLeftApplication?.Invoke(info.AdUnitId);
+
+            if (_config.autoLoadBanner)
+            {
+                _bannerAd.LoadAd();
+            }
+        }
+
         private string GetAppKey()
         {
 #if UNITY_ANDROID
@@ -238,6 +330,70 @@ namespace BackendPackage.Runtime.Ads.LevelPlayAdsAdapter
 #else
             return string.Empty;
 #endif
+        }
+
+        private string GetBannerAdUnitId()
+        {
+#if UNITY_ANDROID
+            return _config.androidBannerAdUnitId;
+#elif UNITY_IOS
+            return _config.iosBannerAdUnitId;
+#else
+            return string.Empty;
+#endif
+        }
+
+        private LevelPlayAdSize GetBannerSize()
+        {
+            switch (_config.bannerSize)
+            {
+                case BackendBannerSize.Large:
+                    return LevelPlayAdSize.LARGE;
+                case BackendBannerSize.MediumRectangle:
+                    return LevelPlayAdSize.MEDIUM_RECTANGLE;
+                case BackendBannerSize.Leaderboard:
+                    return LevelPlayAdSize.LEADERBOARD;
+                case BackendBannerSize.Adaptive:
+                    return LevelPlayAdSize.CreateAdaptiveAdSize(_config.bannerAdaptiveWidth);
+                case BackendBannerSize.Custom:
+                    if (_config.bannerCustomWidth > 0 && _config.bannerCustomHeight > 0)
+                    {
+                        return LevelPlayAdSize.CreateCustomBannerSize(_config.bannerCustomWidth, _config.bannerCustomHeight);
+                    }
+
+                    return LevelPlayAdSize.BANNER;
+                case BackendBannerSize.Banner:
+                default:
+                    return LevelPlayAdSize.BANNER;
+            }
+        }
+
+        private LevelPlayBannerPosition GetBannerPosition()
+        {
+            switch (_config.bannerPosition)
+            {
+                case BackendBannerPosition.TopLeft:
+                    return LevelPlayBannerPosition.TopLeft;
+                case BackendBannerPosition.TopCenter:
+                    return LevelPlayBannerPosition.TopCenter;
+                case BackendBannerPosition.TopRight:
+                    return LevelPlayBannerPosition.TopRight;
+                case BackendBannerPosition.CenterLeft:
+                    return LevelPlayBannerPosition.CenterLeft;
+                case BackendBannerPosition.Center:
+                    return LevelPlayBannerPosition.Center;
+                case BackendBannerPosition.CenterRight:
+                    return LevelPlayBannerPosition.CenterRight;
+                case BackendBannerPosition.BottomLeft:
+                    return LevelPlayBannerPosition.BottomLeft;
+                case BackendBannerPosition.BottomRight:
+                    return LevelPlayBannerPosition.BottomRight;
+                case BackendBannerPosition.Custom:
+                    return new LevelPlayBannerPosition(_config.bannerCustomPosition);
+                case BackendBannerPosition.BottomCenter:
+                default:
+                    return LevelPlayBannerPosition.BottomCenter;
+            }
         }
     }
 
